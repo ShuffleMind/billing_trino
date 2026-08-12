@@ -1,0 +1,120 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 840" font-family="-apple-system, Segoe UI, Helvetica, Arial, sans-serif">
+  <defs>
+    <marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M0,0 L10,5 L0,10 z" fill="#64748b"/>
+    </marker>
+  </defs>
+
+  <rect x="0" y="0" width="960" height="840" fill="#ffffff"/>
+
+  <!-- Title -->
+  <text x="480" y="30" text-anchor="middle" font-size="19" font-weight="700" fill="#0f172a">Linhagem — trino_cost_pipeline (dbt)</text>
+  <text x="480" y="48" text-anchor="middle" font-size="12" fill="#64748b">sources / seed &#8594; staging &#8594; intermediate &#8594; marts</text>
+
+  <!-- Row labels -->
+  <text x="30" y="64" font-size="10" letter-spacing="1" fill="#94a3b8" font-weight="600">SOURCES / SEED</text>
+  <text x="30" y="204" font-size="10" letter-spacing="1" fill="#94a3b8" font-weight="600">STAGING</text>
+  <text x="30" y="344" font-size="10" letter-spacing="1" fill="#94a3b8" font-weight="600">INTERMEDIATE</text>
+  <text x="30" y="634" font-size="10" letter-spacing="1" fill="#94a3b8" font-weight="600">MARTS</text>
+
+  <!-- ===== Edges (drawn first, under nodes) ===== -->
+  <g stroke="#64748b" stroke-width="1.8" fill="none">
+    <line x1="140" y1="126" x2="140" y2="210" marker-end="url(#arrow)"/>
+    <line x1="400" y1="126" x2="400" y2="210" marker-end="url(#arrow)"/>
+    <line x1="670" y1="126" x2="670" y2="350" marker-end="url(#arrow)"/>
+
+    <line x1="140" y1="266" x2="140" y2="350" marker-end="url(#arrow)"/>
+    <line x1="400" y1="266" x2="400" y2="350" marker-end="url(#arrow)"/>
+
+    <line x1="290" y1="378" x2="250" y2="378" marker-end="url(#arrow)"/>
+
+    <line x1="140" y1="406" x2="150" y2="490" marker-end="url(#arrow)"/>
+
+    <line x1="300" y1="550" x2="340" y2="640" marker-end="url(#arrow)"/>
+    <line x1="400" y1="406" x2="400" y2="640" marker-end="url(#arrow)"/>
+    <line x1="670" y1="406" x2="560" y2="640" marker-end="url(#arrow)"/>
+
+    <polyline points="250,238 250,290 920,290 920,670 590,670" marker-end="url(#arrow)"/>
+
+    <line x1="440" y1="700" x2="440" y2="760" marker-end="url(#arrow)"/>
+  </g>
+
+  <text x="152" y="448" font-size="9" font-style="italic" fill="#94a3b8">self-join: overlap de intervalo,</text>
+  <text x="152" y="459" font-size="9" font-style="italic" fill="#94a3b8">mesmo cluster + query_date</text>
+
+  <!-- ===== Nodes ===== -->
+  <!-- helper styles: source/seed, staging, intermediate, mart -->
+
+  <!-- Sources / seed -->
+  <g>
+    <rect x="30" y="70" width="220" height="56" rx="8" fill="#eef2f7" stroke="#94a3b8" stroke-width="1.4"/>
+    <text x="140" y="94" text-anchor="middle" font-size="13" font-weight="700" fill="#1e293b">system.runtime.queries</text>
+    <text x="140" y="110" text-anchor="middle" font-size="10" font-style="italic" fill="#64748b">source</text>
+
+    <rect x="290" y="70" width="220" height="56" rx="8" fill="#eef2f7" stroke="#94a3b8" stroke-width="1.4"/>
+    <text x="400" y="94" text-anchor="middle" font-size="13" font-weight="700" fill="#1e293b">system.runtime.tasks</text>
+    <text x="400" y="110" text-anchor="middle" font-size="10" font-style="italic" fill="#64748b">source</text>
+
+    <rect x="560" y="70" width="220" height="56" rx="8" fill="#eef2f7" stroke="#94a3b8" stroke-width="1.4"/>
+    <text x="670" y="94" text-anchor="middle" font-size="13" font-weight="700" fill="#1e293b">cluster_shape.csv</text>
+    <text x="670" y="110" text-anchor="middle" font-size="10" font-style="italic" fill="#64748b">seed</text>
+  </g>
+
+  <!-- Staging -->
+  <g>
+    <rect x="30" y="210" width="220" height="56" rx="8" fill="#dbeafe" stroke="#3b82f6" stroke-width="1.4"/>
+    <text x="140" y="234" text-anchor="middle" font-size="13" font-weight="700" fill="#1e3a8a">stg_trino__queries</text>
+    <text x="140" y="250" text-anchor="middle" font-size="10" font-style="italic" fill="#1d4ed8">incremental &#183; append</text>
+
+    <rect x="290" y="210" width="220" height="56" rx="8" fill="#dbeafe" stroke="#3b82f6" stroke-width="1.4"/>
+    <text x="400" y="234" text-anchor="middle" font-size="13" font-weight="700" fill="#1e3a8a">stg_trino__tasks</text>
+    <text x="400" y="250" text-anchor="middle" font-size="10" font-style="italic" fill="#1d4ed8">incremental &#183; append</text>
+  </g>
+
+  <!-- Intermediate -->
+  <g>
+    <rect x="30" y="350" width="220" height="56" rx="8" fill="#ede9fe" stroke="#8b5cf6" stroke-width="1.4"/>
+    <text x="140" y="374" text-anchor="middle" font-size="12.5" font-weight="700" fill="#4c1d95">int_trino_query_vcpu_rate</text>
+    <text x="140" y="390" text-anchor="middle" font-size="10" font-style="italic" fill="#6d28d9">incremental &#183; merge</text>
+
+    <rect x="290" y="350" width="220" height="56" rx="8" fill="#ede9fe" stroke="#8b5cf6" stroke-width="1.4"/>
+    <text x="400" y="374" text-anchor="middle" font-size="12.5" font-weight="700" fill="#4c1d95">int_trino_query_cpu_usage</text>
+    <text x="400" y="390" text-anchor="middle" font-size="10" font-style="italic" fill="#6d28d9">view</text>
+
+    <rect x="560" y="350" width="220" height="56" rx="8" fill="#ede9fe" stroke="#8b5cf6" stroke-width="1.4"/>
+    <text x="670" y="374" text-anchor="middle" font-size="12.5" font-weight="700" fill="#4c1d95">int_cluster_vcpu_rate</text>
+    <text x="670" y="390" text-anchor="middle" font-size="10" font-style="italic" fill="#6d28d9">view</text>
+
+    <rect x="20" y="490" width="300" height="60" rx="8" fill="#ede9fe" stroke="#8b5cf6" stroke-width="1.4"/>
+    <text x="170" y="516" text-anchor="middle" font-size="11" font-weight="700" fill="#4c1d95">int_trino_query_concurrent_vcpu_usage</text>
+    <text x="170" y="534" text-anchor="middle" font-size="10" font-style="italic" fill="#6d28d9">incremental &#183; merge &#183; partitioned</text>
+  </g>
+
+  <!-- Marts -->
+  <g>
+    <rect x="290" y="640" width="300" height="60" rx="8" fill="#dcfce7" stroke="#16a34a" stroke-width="1.4"/>
+    <text x="440" y="666" text-anchor="middle" font-size="13.5" font-weight="700" fill="#14532d">fct_trino_query_cost</text>
+    <text x="440" y="684" text-anchor="middle" font-size="10" font-style="italic" fill="#15803d">incremental &#183; merge</text>
+
+    <rect x="290" y="760" width="300" height="60" rx="8" fill="#dcfce7" stroke="#16a34a" stroke-width="1.4"/>
+    <text x="440" y="786" text-anchor="middle" font-size="13.5" font-weight="700" fill="#14532d">fct_trino_query_daily_rank</text>
+    <text x="440" y="804" text-anchor="middle" font-size="10" font-style="italic" fill="#15803d">view</text>
+  </g>
+
+  <!-- Legend -->
+  <g font-size="11" fill="#334155">
+    <rect x="800" y="76" width="14" height="14" rx="3" fill="#eef2f7" stroke="#94a3b8"/>
+    <text x="820" y="87">Fonte / Seed</text>
+
+    <rect x="800" y="102" width="14" height="14" rx="3" fill="#dbeafe" stroke="#3b82f6"/>
+    <text x="820" y="113">Staging</text>
+
+    <rect x="800" y="128" width="14" height="14" rx="3" fill="#ede9fe" stroke="#8b5cf6"/>
+    <text x="820" y="139">Intermediate</text>
+
+    <rect x="800" y="154" width="14" height="14" rx="3" fill="#dcfce7" stroke="#16a34a"/>
+    <text x="820" y="165">Mart</text>
+  </g>
+
+  <text x="940" y="828" text-anchor="end" font-size="9" fill="#cbd5e1">gerado a partir dos ref()/source() do projeto dbt</text>
+</svg>
