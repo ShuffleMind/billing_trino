@@ -1,0 +1,19 @@
+version: 2
+
+sources:
+  - name: trino_system
+    database: system
+    schema: runtime
+    tables:
+      - name: queries
+        description: >
+          Snapshot efêmero de queries em execução/recentes no coordinator.
+          Retenção controlada por query.min-expire-age (default 15m) e
+          query.max-history (default 100 no coordinator). Precisa ser
+          extraída com frequência MENOR que essa janela, senão queries
+          são perdidas antes de serem capturadas.
+      - name: tasks
+        description: >
+          Snapshot efêmero das tasks de cada query. Sujeito à mesma janela
+          de retenção das queries — uma task só é útil enquanto a query
+          pai ainda não expirou do coordinator.

@@ -1,0 +1,45 @@
+# Trecho de config relevante para este pipeline. Cole dentro do
+# dbt_project.yml existente (ou use como projeto novo com dbt-trino).
+
+name: 'trino_cost_pipeline'
+version: '1.0.0'
+config-version: 2
+profile: 'trino_cost_pipeline'
+
+model-paths: ["models"]
+seed-paths: ["seeds"]
+
+vars:
+  # Identifica o cluster Trino de origem desta execução -- necessário
+  # porque system.runtime.queries/tasks não trazem essa informação
+  # nativamente (cada extração só enxerga o próprio coordinator).
+  # Sobrescreva por ambiente/profile, ex.: dbt run --vars '{cluster_id: prod-a}'
+  cluster_id: "default"
+
+  # Deve espelhar o query.min-expire-age configurado no coordinator Trino
+  # (default do Trino: 15). O pipeline PRECISA ser agendado com frequência
+  # menor que esse valor -- senão queries são evictadas de
+  # system.runtime.queries/tasks antes de serem capturadas, e essa perda é
+  # permanente (não há reprocessamento possível depois da eviction).
+  # Também usado como janela de lookback na captura incremental das
+  # stagings/int_trino_query_vcpu_rate/fct_trino_query_cost: cada execução
+  # relê a janela de retenção inteira (não só o que é estritamente novo
+  # desde o último max(ended_at)), porque uma linha pode ficar visível na
+  # tabela de sistema um pouco depois do timestamp "end" que ela carrega.
+  # Isso faz execuções reprocessarem registros já capturados -- por isso
+  # esses modelos usam incremental_strategy='merge', não 'append'.
+  query_min_expire_age_minutes: 15
+
+models:
+  trino_cost_pipeline:
+    staging:
+      +materialized: incremental
+      +incremental_strategy: append
+      # ajuste catalog/schema de destino (Iceberg) conforme seu profiles.yml
+      +file_format: iceberg
+    intermediate:
+      +materialized: view
+    marts:
+      +materialized: incremental
+      +incremental_strategy: merge
+      +file_format: iceberg

@@ -1,0 +1,60 @@
+version: 2
+
+models:
+  - name: fct_trino_query_cost
+    description: >
+      Custo estimado por query do Trino, em VCPU-horas e USD, derivado do
+      shape/preço das máquinas do cluster (seed cluster_shape). Chave
+      primária composta (query_id, cluster_id) -- query_id sozinho não é
+      garantidamente único entre clusters diferentes. Inclui o percentual
+      de capacidade do cluster consumido por cada query, em duas
+      variantes: taxa média própria da query (pct_cluster_capacity_avg) e
+      soma das taxas de todas as queries sobrepostas no tempo
+      (pct_cluster_capacity_concurrent, mais cara de calcular via
+      self-join em int_trino_query_concurrent_vcpu_usage).
+    columns:
+      - name: query_id
+        tests:
+          - not_null
+      - name: cluster_id
+        description: >
+          Identifica o cluster Trino de origem (var cluster_id em
+          dbt_project.yml) -- necessário porque system.runtime.queries
+          não traz essa informação nativamente.
+        tests:
+          - not_null
+      - name: vcpu_hours
+        tests:
+          - not_null
+      - name: estimated_cost_usd
+        tests:
+          - not_null
+      - name: pct_cluster_capacity_avg
+        description: >
+          % da capacidade total de vCPU do cluster representada pela taxa
+          média de consumo da própria query (vcpu_hours / duration_hours).
+      - name: pct_cluster_capacity_concurrent
+        description: >
+          % da capacidade total de vCPU do cluster representada pela soma
+          das taxas médias de todas as queries do mesmo cluster que se
+          sobrepuseram no tempo com esta (aproximação de concorrência real).
+    # nota: unique test em (query_id, cluster_id) exige
+    # dbt_utils.unique_combination_of_columns -- não incluído pois o
+    # projeto não depende de dbt_utils hoje.
+
+  - name: fct_trino_query_daily_rank
+    description: >
+      Camada analítica sobre fct_trino_query_cost: ranking das queries do
+      dia (por custo e por vcpu_hours) e percentual de cada query sobre o
+      total diário, particionados por (cluster_id, query_date).
+      Materializada como view porque esses totais dependem de todas as
+      queries do dia -- incompatível com o merge incremental do fato.
+    columns:
+      - name: daily_cost_rank
+        description: Posição da query no dia (cluster_id, query_date), ordenada por estimated_cost_usd desc.
+      - name: daily_vcpu_rank
+        description: Posição da query no dia (cluster_id, query_date), ordenada por vcpu_hours desc.
+      - name: pct_cost_of_daily_total
+        description: "% do custo total do dia (cluster_id, query_date) atribuído a esta query."
+      - name: pct_vcpu_hours_of_daily_total
+        description: "% das vcpu_hours totais do dia (cluster_id, query_date) atribuídas a esta query."

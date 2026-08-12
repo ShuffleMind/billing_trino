@@ -1,0 +1,3 @@
+cluster_id,node_role,instance_type,vcpus,hourly_price_usd,node_count,valid_from
+default,coordinator,r6i.4xlarge,16,1.008,1,2026-01-01
+default,worker,r6i.4xlarge,16,1.008,10,2026-01-01
