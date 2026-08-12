@@ -3,7 +3,7 @@
     materialized='incremental',
     incremental_strategy='merge',
     unique_key=['query_id', 'cluster_id'],
-    file_format='iceberg',
+    file_format='parquet',
     partitioned_by=['query_date']
   )
 }}

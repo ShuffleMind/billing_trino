@@ -42,9 +42,6 @@ select
     q.query_id,
     q.user_name,
     q.source,
-    q.catalog,
-    q.schema_name,
-    q.query_type,
     q.state,
     q.created,
     q.started,
@@ -52,7 +49,10 @@ select
     -- dia de execução com base em `started`; queries que atravessam a
     -- meia-noite ficam atribuídas ao dia em que começaram, não terminaram
     date(q.started)                                     as query_date,
-    date_diff('millisecond', q.started, q.ended_at)
+    -- cast p/ double antes de dividir: bigint / decimal literal (1000.0)
+    -- produz DECIMAL(22,1) em Trino, que trunca p/ 0.0 qualquer duração
+    -- abaixo de ~3min (a maioria das queries reais).
+    cast(date_diff('millisecond', q.started, q.ended_at) as double)
         / 1000.0 / 3600.0                                as duration_hours,
     q.query,
     coalesce(c.task_count, 0)                          as task_count,
@@ -61,13 +61,14 @@ select
     r.cluster_total_vcpus,
     coalesce(c.vcpu_hours, 0) * r.vcpu_hour_rate_usd   as estimated_cost_usd,
     -- % da capacidade do cluster: taxa média de vCPU da própria query
-    -- (vcpu_hours / duração) sobre o total de vCPUs do cluster
-    case
-        when date_diff('millisecond', q.started, q.ended_at) > 0
-            then (coalesce(c.vcpu_hours, 0)
-                    / (date_diff('millisecond', q.started, q.ended_at) / 1000.0 / 3600.0))
-                 / nullif(r.cluster_total_vcpus, 0) * 100
-    end                                                  as pct_cluster_capacity_avg,
+    -- (vcpu_hours / duração) sobre o total de vCPUs do cluster.
+    -- nullif() no denominador em vez de CASE WHEN > 0: o motor vetorizado
+    -- do Trino avalia a divisão para todas as linhas do batch antes de
+    -- aplicar a condição do CASE, então um CASE WHEN não protege contra
+    -- DIVISION_BY_ZERO em tempo de execução aqui.
+    (coalesce(c.vcpu_hours, 0)
+        / nullif(cast(date_diff('millisecond', q.started, q.ended_at) as double) / 1000.0 / 3600.0, 0))
+        / nullif(r.cluster_total_vcpus, 0) * 100          as pct_cluster_capacity_avg,
     -- % da capacidade do cluster: soma das taxas médias de todas as
     -- queries sobrepostas no tempo (ver int_trino_query_concurrent_vcpu_usage)
     coalesce(cu.concurrent_cluster_vcpu_usage, 0)

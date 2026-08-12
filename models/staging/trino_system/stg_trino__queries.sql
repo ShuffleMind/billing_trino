@@ -7,9 +7,11 @@
 }}
 
 -- Camada de tradução: isola o resto do projeto de mudanças de schema entre
--- versões do Trino no system.runtime.queries. Confirme os nomes de coluna
--- rodando `DESCRIBE system.runtime.queries;` na sua versão (462) antes de
--- rodar em produção -- alguns nomes variam entre releases.
+-- versões do Trino no system.runtime.queries. Confirmado via
+-- `DESCRIBE system.runtime.queries;` contra um Trino 462 real: a tabela
+-- NÃO tem colunas catalog/schema/query_type (só existiam em versões mais
+-- antigas ou nunca existiram) -- por isso não são selecionadas aqui.
+-- Reconfirme ao trocar de versão do Trino antes de rodar em produção.
 
 select
     cast('{{ var("cluster_id") }}' as varchar) as cluster_id,
@@ -17,9 +19,6 @@ select
     state,
     "user"            as user_name,
     source,
-    catalog,
-    "schema"          as schema_name,
-    query_type,
     resource_group_id,
     query,
     created,

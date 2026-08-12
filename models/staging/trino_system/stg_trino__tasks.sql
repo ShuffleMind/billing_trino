@@ -8,9 +8,10 @@
 
 -- Mesma lógica de tradução de schema aplicada a system.runtime.tasks.
 -- split_cpu_time_ms = soma do tempo de CPU consumido pelos splits da task.
--- Confirme o nome exato com `DESCRIBE system.runtime.tasks;` -- colunas
--- como raw_input_bytes/raw_input_rows já foram removidas em releases
--- recentes do Trino, então não assuma o schema sem checar.
+-- Confirmado via `DESCRIBE system.runtime.tasks;` contra um Trino 462
+-- real: não existe coluna elapsed_time_ms (removida daqui). raw_input_bytes/
+-- raw_input_rows continuam presentes na 462. Reconfirme ao trocar de
+-- versão do Trino antes de rodar em produção.
 
 select
     cast('{{ var("cluster_id") }}' as varchar) as cluster_id,
@@ -19,7 +20,6 @@ select
     stage_id,
     state,
     split_cpu_time_ms,
-    elapsed_time_ms,
     created,
     "end" as ended_at
 from {{ source('trino_system', 'tasks') }}

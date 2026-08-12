@@ -36,10 +36,13 @@ models:
       +materialized: incremental
       +incremental_strategy: append
       # ajuste catalog/schema de destino (Iceberg) conforme seu profiles.yml
-      +file_format: iceberg
+      # "iceberg" não é um valor válido aqui -- é o formato de TABELA (dado
+      # pelo catalog), não o formato de ARQUIVO. Valores aceitos pela
+      # property `format` do conector Iceberg: ORC, PARQUET, AVRO.
+      +file_format: parquet
     intermediate:
       +materialized: view
     marts:
       +materialized: incremental
       +incremental_strategy: merge
-      +file_format: iceberg
+      +file_format: parquet

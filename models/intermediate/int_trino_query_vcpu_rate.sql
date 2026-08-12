@@ -3,7 +3,7 @@
     materialized='incremental',
     incremental_strategy='merge',
     unique_key=['query_id', 'cluster_id'],
-    file_format='iceberg',
+    file_format='parquet',
     partitioned_by=['query_date']
   )
 }}
@@ -21,10 +21,20 @@ select
     q.started,
     q.ended_at,
     date(q.started)                                                     as query_date,
-    date_diff('millisecond', q.started, q.ended_at) / 1000.0 / 3600.0    as duration_hours,
+    -- cast p/ double antes de dividir: bigint / decimal literal (1000.0)
+    -- produz DECIMAL(22,1) em Trino, que trunca p/ 0.0 qualquer duração
+    -- abaixo de ~3min (a maioria das queries reais) -- ver nullif() abaixo,
+    -- que também depende dessa mesma correção pra não achar "denominador
+    -- zero" onde na verdade só faltava precisão.
+    cast(date_diff('millisecond', q.started, q.ended_at) as double) / 1000.0 / 3600.0
+        as duration_hours,
     c.vcpu_hours,
+    -- nullif() no denominador (em vez de CASE WHEN > 0) porque o motor
+    -- vetorizado do Trino avalia a expressão da divisão para todas as
+    -- linhas do batch antes de aplicar a condição do CASE -- um CASE WHEN
+    -- não protege contra DIVISION_BY_ZERO em tempo de execução aqui.
     c.vcpu_hours
-        / nullif(date_diff('millisecond', q.started, q.ended_at) / 1000.0 / 3600.0, 0)
+        / nullif(cast(date_diff('millisecond', q.started, q.ended_at) as double) / 1000.0 / 3600.0, 0)
         as avg_vcpu_rate
 from {{ ref('stg_trino__queries') }} q
 join {{ ref('int_trino_query_cpu_usage') }} c
