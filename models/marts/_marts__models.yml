@@ -42,6 +42,46 @@ models:
     # dbt_utils.unique_combination_of_columns -- não incluído pois o
     # projeto não depende de dbt_utils hoje.
 
+  - name: fct_trino_workload
+    description: >
+      Fato por query com métricas de workload (tendência de uso, custo de
+      elapsed/scheduled time, volume de I/O, breakdown por usuário e por
+      erro) -- equivalente ao que o Presto/Trino Workload Analyzer
+      (github.com/varadaio/presto-workload-analyzer) calcula a partir da
+      QueryInfo completa via API /v1/query/{id}, mas derivado só de
+      system.runtime.queries/tasks. Não cobre métricas que exigem o plano
+      de execução por operador (breakdown por tipo de operador, bytes por
+      tabela/scan, seletividade de filtro, lado/tipo de join) -- essas
+      não existem em system.runtime.*. Chave primária composta
+      (query_id, cluster_id), mesmo motivo de fct_trino_query_cost.
+    columns:
+      - name: query_id
+        tests:
+          - not_null
+      - name: cluster_id
+        tests:
+          - not_null
+      - name: elapsed_seconds
+        description: "Tempo decorrido do ponto de vista do cliente: created até ended_at, inclui fila."
+      - name: queued_seconds
+        description: Tempo em fila antes de começar a executar (queued_time_ms da query).
+      - name: scheduled_cluster_hours
+        description: >
+          Soma do tempo agendado (CPU + espera de agendamento) de todas
+          as tasks da query, em horas -- proxy de utilização de cluster,
+          diferente de vcpu_hours (que é só CPU pura).
+      - name: input_bytes
+        description: Soma de raw_input_bytes de todas as tasks da query.
+      - name: output_bytes
+        description: >
+          Soma de output_bytes de todas as tasks (todos os estágios,
+          inclusive intermediários) -- não é o mesmo valor que o
+          "outputDataSize" da API do Trino (que é só o resultado final).
+          É um proxy do volume total de dados movimentado.
+    # nota: unique test em (query_id, cluster_id) exige
+    # dbt_utils.unique_combination_of_columns -- não incluído pois o
+    # projeto não depende de dbt_utils hoje.
+
   - name: fct_trino_query_daily_rank
     description: >
       Camada analítica sobre fct_trino_query_cost: ranking das queries do
@@ -58,3 +98,62 @@ models:
         description: "% do custo total do dia (cluster_id, query_date) atribuído a esta query."
       - name: pct_vcpu_hours_of_daily_total
         description: "% das vcpu_hours totais do dia (cluster_id, query_date) atribuídas a esta query."
+
+  - name: fct_trino_cluster_growth_daily
+    description: >
+      Visão diária de crescimento de processamento por cluster: volume de
+      queries, vCPU-horas, custo estimado e bytes lidos, com variação
+      percentual em relação ao dia anterior (day-over-day, via LAG()).
+      Grão (cluster_id, query_date). Materializada como view pelo mesmo
+      motivo de fct_trino_query_daily_rank -- a variação depende de todo
+      o histórico do cluster, incompatível com merge incremental.
+    columns:
+      - name: cluster_id
+        tests:
+          - not_null
+      - name: query_date
+        tests:
+          - not_null
+      - name: total_queries
+        description: Total de queries do cluster no dia (inclui FINISHED e FAILED).
+      - name: total_vcpu_hours
+        description: Soma de vcpu_hours de todas as queries do dia.
+      - name: total_cost_usd
+        description: Soma de estimated_cost_usd de todas as queries do dia.
+      - name: total_input_bytes
+        description: Soma de input_bytes (fct_trino_workload) de todas as queries do dia.
+      - name: cost_usd_per_tb
+        description: >
+          Custo estimado por TB processado no dia (total_cost_usd /
+          (total_input_bytes / 1e12)) -- métrica de eficiência de custo,
+          não de volume. NULL em dias sem nenhum byte lido.
+      - name: queries_dod_pct
+      - name: vcpu_hours_dod_pct
+      - name: cost_usd_dod_pct
+      - name: input_bytes_dod_pct
+    # nota: LAG() compara com a linha anterior do resultado, não com o dia
+    # de calendário anterior -- um dia sem nenhuma query faz a comparação
+    # "pular" esse buraco (ver comentário no .sql). As colunas *_dod_pct
+    # vêm NULL no primeiro dia de cada cluster (sem período anterior p/
+    # comparar) -- isso é esperado, não um bug.
+
+  - name: fct_trino_cluster_growth_monthly
+    description: >
+      Mesma análise de fct_trino_cluster_growth_daily, agregada por mês
+      (date_trunc), com variação mês a mês (month-over-month). Grão
+      (cluster_id, query_month).
+    columns:
+      - name: cluster_id
+        tests:
+          - not_null
+      - name: query_month
+        tests:
+          - not_null
+      - name: cost_usd_per_tb
+        description: >
+          Custo estimado por TB processado no mês, mesma fórmula de
+          fct_trino_cluster_growth_daily.
+      - name: queries_mom_pct
+      - name: vcpu_hours_mom_pct
+      - name: cost_usd_mom_pct
+      - name: input_bytes_mom_pct

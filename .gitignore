@@ -6,3 +6,5 @@ profiles.yml
 *.log
 .DS_Store
 .venv/
+scratch/
+scripts/

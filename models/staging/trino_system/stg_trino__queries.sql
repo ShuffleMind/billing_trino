@@ -12,6 +12,15 @@
 -- NÃO tem colunas catalog/schema/query_type (só existiam em versões mais
 -- antigas ou nunca existiram) -- por isso não são selecionadas aqui.
 -- Reconfirme ao trocar de versão do Trino antes de rodar em produção.
+--
+-- created/started/last_heartbeat/end vêm como timestamp(3) with time
+-- zone em system.runtime.queries, mas Iceberg só aceita timestamp(6).
+-- Rodando via `trino` CLI o Trino faz esse widening implicitamente no
+-- CREATE TABLE AS SELECT, mas o dbt-trino (via cliente Python) envolve a
+-- query numa camada extra que quebra esse comportamento implícito e
+-- falha com "Timestamp precision (3) not supported for Iceberg" -- por
+-- isso o cast explícito abaixo, em vez de depender de inferência do
+-- engine.
 
 select
     cast('{{ var("cluster_id") }}' as varchar) as cluster_id,
@@ -21,10 +30,10 @@ select
     source,
     resource_group_id,
     query,
-    created,
-    started,
-    last_heartbeat,
-    "end"             as ended_at,
+    cast(created as timestamp(6) with time zone)        as created,
+    cast(started as timestamp(6) with time zone)        as started,
+    cast(last_heartbeat as timestamp(6) with time zone) as last_heartbeat,
+    cast("end" as timestamp(6) with time zone)          as ended_at,
     queued_time_ms,
     analysis_time_ms,
     planning_time_ms,

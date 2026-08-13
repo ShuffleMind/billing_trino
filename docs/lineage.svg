@@ -1,15 +1,15 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 840" font-family="-apple-system, Segoe UI, Helvetica, Arial, sans-serif">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1320 960" font-family="-apple-system, Segoe UI, Helvetica, Arial, sans-serif">
   <defs>
     <marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
       <path d="M0,0 L10,5 L0,10 z" fill="#64748b"/>
     </marker>
   </defs>
 
-  <rect x="0" y="0" width="960" height="840" fill="#ffffff"/>
+  <rect x="0" y="0" width="1320" height="960" fill="#ffffff"/>
 
   <!-- Title -->
-  <text x="480" y="30" text-anchor="middle" font-size="19" font-weight="700" fill="#0f172a">Linhagem — trino_cost_pipeline (dbt)</text>
-  <text x="480" y="48" text-anchor="middle" font-size="12" fill="#64748b">sources / seed &#8594; staging &#8594; intermediate &#8594; marts</text>
+  <text x="660" y="30" text-anchor="middle" font-size="19" font-weight="700" fill="#0f172a">Linhagem — trino_cost_pipeline (dbt)</text>
+  <text x="660" y="48" text-anchor="middle" font-size="12" fill="#64748b">sources / seed &#8594; staging &#8594; intermediate &#8594; marts</text>
 
   <!-- Row labels -->
   <text x="30" y="64" font-size="10" letter-spacing="1" fill="#94a3b8" font-weight="600">SOURCES / SEED</text>
@@ -19,31 +19,55 @@
 
   <!-- ===== Edges (drawn first, under nodes) ===== -->
   <g stroke="#64748b" stroke-width="1.8" fill="none">
+    <!-- sources -> staging -->
     <line x1="140" y1="126" x2="140" y2="210" marker-end="url(#arrow)"/>
     <line x1="400" y1="126" x2="400" y2="210" marker-end="url(#arrow)"/>
-    <line x1="670" y1="126" x2="670" y2="350" marker-end="url(#arrow)"/>
+    <!-- seed -> int_cluster_vcpu_rate -->
+    <line x1="940" y1="126" x2="940" y2="350" marker-end="url(#arrow)"/>
 
+    <!-- staging -> intermediate -->
     <line x1="140" y1="266" x2="140" y2="350" marker-end="url(#arrow)"/>
     <line x1="400" y1="266" x2="400" y2="350" marker-end="url(#arrow)"/>
+    <line x1="450" y1="266" x2="610" y2="350" marker-end="url(#arrow)"/>
 
+    <!-- int_trino_query_cpu_usage -> int_trino_query_vcpu_rate -->
     <line x1="290" y1="378" x2="250" y2="378" marker-end="url(#arrow)"/>
 
+    <!-- int_trino_query_vcpu_rate -> concurrent_vcpu_usage (self-join) -->
     <line x1="140" y1="406" x2="150" y2="490" marker-end="url(#arrow)"/>
 
+    <!-- concurrent_vcpu_usage -> fct_trino_query_cost -->
     <line x1="300" y1="550" x2="340" y2="640" marker-end="url(#arrow)"/>
+    <!-- int_trino_query_cpu_usage -> fct_trino_query_cost -->
     <line x1="400" y1="406" x2="400" y2="640" marker-end="url(#arrow)"/>
-    <line x1="670" y1="406" x2="560" y2="640" marker-end="url(#arrow)"/>
+    <!-- int_cluster_vcpu_rate -> fct_trino_query_cost -->
+    <line x1="940" y1="406" x2="560" y2="640" marker-end="url(#arrow)"/>
 
-    <polyline points="250,238 250,290 920,290 920,670 590,670" marker-end="url(#arrow)"/>
+    <!-- int_trino_query_cpu_usage -> fct_trino_workload -->
+    <line x1="480" y1="406" x2="700" y2="640" marker-end="url(#arrow)"/>
+    <!-- int_trino_query_io_usage -> fct_trino_workload -->
+    <line x1="670" y1="406" x2="750" y2="640" marker-end="url(#arrow)"/>
 
+    <!-- stg_trino__queries -> fct_trino_query_cost (long route, around the right) -->
+    <polyline points="250,238 250,290 1150,290 1150,600 440,600 440,640" marker-end="url(#arrow)"/>
+    <!-- stg_trino__queries -> fct_trino_workload (long route, further right) -->
+    <polyline points="250,248 250,300 1180,300 1180,670 950,670" marker-end="url(#arrow)"/>
+
+    <!-- fct_trino_query_cost -> fct_trino_query_daily_rank -->
     <line x1="440" y1="700" x2="440" y2="760" marker-end="url(#arrow)"/>
+
+    <!-- fct_trino_query_cost -> growth daily/monthly (route right of daily_rank) -->
+    <polyline points="590,700 650,880" marker-end="url(#arrow)"/>
+    <polyline points="590,700 980,880" marker-end="url(#arrow)"/>
+    <!-- fct_trino_workload -> growth daily/monthly -->
+    <line x1="800" y1="700" x2="800" y2="880" marker-end="url(#arrow)"/>
+    <polyline points="800,700 1130,880" marker-end="url(#arrow)"/>
   </g>
 
   <text x="152" y="448" font-size="9" font-style="italic" fill="#94a3b8">self-join: overlap de intervalo,</text>
   <text x="152" y="459" font-size="9" font-style="italic" fill="#94a3b8">mesmo cluster + query_date</text>
 
   <!-- ===== Nodes ===== -->
-  <!-- helper styles: source/seed, staging, intermediate, mart -->
 
   <!-- Sources / seed -->
   <g>
@@ -55,9 +79,9 @@
     <text x="400" y="94" text-anchor="middle" font-size="13" font-weight="700" fill="#1e293b">system.runtime.tasks</text>
     <text x="400" y="110" text-anchor="middle" font-size="10" font-style="italic" fill="#64748b">source</text>
 
-    <rect x="560" y="70" width="220" height="56" rx="8" fill="#eef2f7" stroke="#94a3b8" stroke-width="1.4"/>
-    <text x="670" y="94" text-anchor="middle" font-size="13" font-weight="700" fill="#1e293b">cluster_shape.csv</text>
-    <text x="670" y="110" text-anchor="middle" font-size="10" font-style="italic" fill="#64748b">seed</text>
+    <rect x="830" y="70" width="220" height="56" rx="8" fill="#eef2f7" stroke="#94a3b8" stroke-width="1.4"/>
+    <text x="940" y="94" text-anchor="middle" font-size="13" font-weight="700" fill="#1e293b">cluster_shape.csv</text>
+    <text x="940" y="110" text-anchor="middle" font-size="10" font-style="italic" fill="#64748b">seed</text>
   </g>
 
   <!-- Staging -->
@@ -82,8 +106,12 @@
     <text x="400" y="390" text-anchor="middle" font-size="10" font-style="italic" fill="#6d28d9">view</text>
 
     <rect x="560" y="350" width="220" height="56" rx="8" fill="#ede9fe" stroke="#8b5cf6" stroke-width="1.4"/>
-    <text x="670" y="374" text-anchor="middle" font-size="12.5" font-weight="700" fill="#4c1d95">int_cluster_vcpu_rate</text>
+    <text x="670" y="374" text-anchor="middle" font-size="12.5" font-weight="700" fill="#4c1d95">int_trino_query_io_usage</text>
     <text x="670" y="390" text-anchor="middle" font-size="10" font-style="italic" fill="#6d28d9">view</text>
+
+    <rect x="830" y="350" width="220" height="56" rx="8" fill="#ede9fe" stroke="#8b5cf6" stroke-width="1.4"/>
+    <text x="940" y="374" text-anchor="middle" font-size="12.5" font-weight="700" fill="#4c1d95">int_cluster_vcpu_rate</text>
+    <text x="940" y="390" text-anchor="middle" font-size="10" font-style="italic" fill="#6d28d9">view</text>
 
     <rect x="20" y="490" width="300" height="60" rx="8" fill="#ede9fe" stroke="#8b5cf6" stroke-width="1.4"/>
     <text x="170" y="516" text-anchor="middle" font-size="11" font-weight="700" fill="#4c1d95">int_trino_query_concurrent_vcpu_usage</text>
@@ -96,25 +124,37 @@
     <text x="440" y="666" text-anchor="middle" font-size="13.5" font-weight="700" fill="#14532d">fct_trino_query_cost</text>
     <text x="440" y="684" text-anchor="middle" font-size="10" font-style="italic" fill="#15803d">incremental &#183; merge</text>
 
+    <rect x="650" y="640" width="300" height="60" rx="8" fill="#dcfce7" stroke="#16a34a" stroke-width="1.4"/>
+    <text x="800" y="666" text-anchor="middle" font-size="13.5" font-weight="700" fill="#14532d">fct_trino_workload</text>
+    <text x="800" y="684" text-anchor="middle" font-size="10" font-style="italic" fill="#15803d">incremental &#183; merge</text>
+
     <rect x="290" y="760" width="300" height="60" rx="8" fill="#dcfce7" stroke="#16a34a" stroke-width="1.4"/>
     <text x="440" y="786" text-anchor="middle" font-size="13.5" font-weight="700" fill="#14532d">fct_trino_query_daily_rank</text>
     <text x="440" y="804" text-anchor="middle" font-size="10" font-style="italic" fill="#15803d">view</text>
+
+    <rect x="650" y="880" width="300" height="60" rx="8" fill="#dcfce7" stroke="#16a34a" stroke-width="1.4"/>
+    <text x="800" y="906" text-anchor="middle" font-size="12.5" font-weight="700" fill="#14532d">fct_trino_cluster_growth_daily</text>
+    <text x="800" y="924" text-anchor="middle" font-size="10" font-style="italic" fill="#15803d">view</text>
+
+    <rect x="980" y="880" width="300" height="60" rx="8" fill="#dcfce7" stroke="#16a34a" stroke-width="1.4"/>
+    <text x="1130" y="906" text-anchor="middle" font-size="12" font-weight="700" fill="#14532d">fct_trino_cluster_growth_monthly</text>
+    <text x="1130" y="924" text-anchor="middle" font-size="10" font-style="italic" fill="#15803d">view</text>
   </g>
 
   <!-- Legend -->
   <g font-size="11" fill="#334155">
-    <rect x="800" y="76" width="14" height="14" rx="3" fill="#eef2f7" stroke="#94a3b8"/>
-    <text x="820" y="87">Fonte / Seed</text>
+    <rect x="1100" y="150" width="14" height="14" rx="3" fill="#eef2f7" stroke="#94a3b8"/>
+    <text x="1120" y="161">Fonte / Seed</text>
 
-    <rect x="800" y="102" width="14" height="14" rx="3" fill="#dbeafe" stroke="#3b82f6"/>
-    <text x="820" y="113">Staging</text>
+    <rect x="1100" y="176" width="14" height="14" rx="3" fill="#dbeafe" stroke="#3b82f6"/>
+    <text x="1120" y="187">Staging</text>
 
-    <rect x="800" y="128" width="14" height="14" rx="3" fill="#ede9fe" stroke="#8b5cf6"/>
-    <text x="820" y="139">Intermediate</text>
+    <rect x="1100" y="202" width="14" height="14" rx="3" fill="#ede9fe" stroke="#8b5cf6"/>
+    <text x="1120" y="213">Intermediate</text>
 
-    <rect x="800" y="154" width="14" height="14" rx="3" fill="#dcfce7" stroke="#16a34a"/>
-    <text x="820" y="165">Mart</text>
+    <rect x="1100" y="228" width="14" height="14" rx="3" fill="#dcfce7" stroke="#16a34a"/>
+    <text x="1120" y="239">Mart</text>
   </g>
 
-  <text x="940" y="828" text-anchor="end" font-size="9" fill="#cbd5e1">gerado a partir dos ref()/source() do projeto dbt</text>
+  <text x="1300" y="948" text-anchor="end" font-size="9" fill="#cbd5e1">gerado a partir dos ref()/source() do projeto dbt</text>
 </svg>

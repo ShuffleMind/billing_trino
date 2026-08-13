@@ -16,21 +16,25 @@ A variável `query_min_expire_age_minutes` em [dbt_project.yml](dbt_project.yml)
 | Camada | Papel |
 |---|---|
 | **staging** | Tradução 1:1 do schema de `system.runtime.queries`/`tasks`, isolando o resto do projeto de mudanças de schema entre versões do Trino. Só captura queries em estado terminal (`FINISHED`/`FAILED`). |
-| **intermediate** | Cálculo de consumo de CPU/vCPU por query, taxa `$/vCPU-hora` do cluster (a partir do seed `cluster_shape`) e aproximação de concorrência real via self-join de intervalos sobrepostos. |
-| **marts** | Fato de custo por query e camada analítica de ranking/percentual diário. |
+| **intermediate** | Cálculo de consumo de CPU/vCPU e I/O por query, taxa `$/vCPU-hora` do cluster (a partir do seed `cluster_shape`) e aproximação de concorrência real via self-join de intervalos sobrepostos. |
+| **marts** | Fato de custo por query, fato de workload (tendência/uso/erros), ranking/percentual diário e visões de crescimento de processamento por cluster (diária/mensal). |
 
 ## Modelos
 
 | Modelo | Camada | Materialização | Descrição |
 |---|---|---|---|
 | `stg_trino__queries` | staging | incremental · append | Queries terminais (`FINISHED`/`FAILED`), schema traduzido. |
-| `stg_trino__tasks` | staging | incremental · append | Tasks finalizadas (`FINISHED`), CPU time por task. |
+| `stg_trino__tasks` | staging | incremental · append | Tasks finalizadas (`FINISHED`): CPU time, scheduled time e I/O (bytes/rows) por task. |
 | `int_trino_query_cpu_usage` | intermediate | view | Soma o CPU time das tasks por query → `vcpu_hours`. |
+| `int_trino_query_io_usage` | intermediate | view | Soma scheduled time e bytes/rows de input/output das tasks por query. |
 | `int_cluster_vcpu_rate` | intermediate | view | Taxa `$/vCPU-hora` derivada do shape do cluster (seed), não de preço de mercado. |
 | `int_trino_query_vcpu_rate` | intermediate | incremental · merge · particionado por `query_date` | Taxa média de vCPU por query (`vcpu_hours / duração`). |
 | `int_trino_query_concurrent_vcpu_usage` | intermediate | incremental · merge · particionado por `query_date` | Soma, por query, a taxa média de vCPU de todas as queries do mesmo cluster cujo intervalo de execução se sobrepõe ao dela (aproximação de concorrência real). |
 | `fct_trino_query_cost` | mart | incremental · merge | Custo estimado por query (`query_id` + `cluster_id`), em vCPU-horas e USD, com % de capacidade do cluster consumida (variante média e variante concorrente). |
+| `fct_trino_workload` | mart | incremental · merge | Métricas de workload por query (elapsed/queued/scheduled time, I/O, erro) — equivalente ao [Presto/Trino Workload Analyzer](https://github.com/varadaio/presto-workload-analyzer), calculado só a partir de `system.runtime.*` (sem precisar da API `/v1/query`). Não cobre métricas por operador/plano (join, seletividade de filtro, tabela escaneada), que `system.runtime.*` não expõe. |
 | `fct_trino_query_daily_rank` | mart | view | Ranking diário de custo/vCPU-horas e % do total diário, particionado por `cluster_id` + `query_date`. |
+| `fct_trino_cluster_growth_daily` | mart | view | Crescimento diário de processamento por cluster: queries, vCPU-horas, custo, bytes lidos e **custo por TB processado** (`cost_usd_per_tb`), com variação % dia a dia (`LAG()`). |
+| `fct_trino_cluster_growth_monthly` | mart | view | Mesma análise de `fct_trino_cluster_growth_daily`, agregada por mês, com variação % mês a mês. |
 
 ## Linhagem
 
@@ -56,7 +60,7 @@ vars:
   query_min_expire_age_minutes: 15       # deve espelhar query.min-expire-age do coordinator Trino
 ```
 
-Os modelos de staging e mart usam `file_format: iceberg`; ajuste catalog/schema de destino no `profiles.yml` (não incluso neste repositório).
+Os modelos de staging e mart usam `file_format: parquet` (formato de arquivo do Iceberg — `iceberg` não é um valor válido aqui, é o formato de tabela dado pelo catalog); ajuste catalog/schema de destino no `profiles.yml` (não incluso neste repositório).
 
 ## Como rodar
 
