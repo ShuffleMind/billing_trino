@@ -1,160 +1,152 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1320 960" font-family="-apple-system, Segoe UI, Helvetica, Arial, sans-serif">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 2325 476" font-family="-apple-system, Segoe UI, Helvetica, Arial, sans-serif">
   <defs>
-    <marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
-      <path d="M0,0 L10,5 L0,10 z" fill="#64748b"/>
+    <marker id="arrow" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M0,0 L10,5 L0,10 z" fill="#94a3b8"/>
     </marker>
+    <pattern id="dotgrid" width="18" height="18" patternUnits="userSpaceOnUse">
+      <circle cx="1.4" cy="1.4" r="1.4" fill="#e2e8f0"/>
+    </pattern>
+    <filter id="cardshadow" x="-20%" y="-40%" width="140%" height="180%">
+      <feDropShadow dx="0" dy="1.5" stdDeviation="2" flood-color="#0f172a" flood-opacity="0.10"/>
+    </filter>
   </defs>
-
-  <rect x="0" y="0" width="1320" height="960" fill="#ffffff"/>
-
-  <!-- Title -->
-  <text x="660" y="30" text-anchor="middle" font-size="19" font-weight="700" fill="#0f172a">Linhagem — trino_cost_pipeline (dbt)</text>
-  <text x="660" y="48" text-anchor="middle" font-size="12" fill="#64748b">sources / seed &#8594; staging &#8594; intermediate &#8594; marts</text>
-
-  <!-- Row labels -->
-  <text x="30" y="64" font-size="10" letter-spacing="1" fill="#94a3b8" font-weight="600">SOURCES / SEED</text>
-  <text x="30" y="204" font-size="10" letter-spacing="1" fill="#94a3b8" font-weight="600">STAGING</text>
-  <text x="30" y="344" font-size="10" letter-spacing="1" fill="#94a3b8" font-weight="600">INTERMEDIATE</text>
-  <text x="30" y="634" font-size="10" letter-spacing="1" fill="#94a3b8" font-weight="600">MARTS</text>
-
-  <!-- ===== Edges (drawn first, under nodes) ===== -->
-  <g stroke="#64748b" stroke-width="1.8" fill="none">
-    <!-- sources -> staging -->
-    <line x1="140" y1="126" x2="140" y2="210" marker-end="url(#arrow)"/>
-    <line x1="400" y1="126" x2="400" y2="210" marker-end="url(#arrow)"/>
-    <!-- seed -> int_cluster_vcpu_rate -->
-    <line x1="940" y1="126" x2="940" y2="350" marker-end="url(#arrow)"/>
-
-    <!-- staging -> intermediate -->
-    <line x1="140" y1="266" x2="140" y2="350" marker-end="url(#arrow)"/>
-    <line x1="400" y1="266" x2="400" y2="350" marker-end="url(#arrow)"/>
-    <line x1="450" y1="266" x2="610" y2="350" marker-end="url(#arrow)"/>
-
-    <!-- int_trino_query_cpu_usage -> int_trino_query_vcpu_rate -->
-    <line x1="290" y1="378" x2="250" y2="378" marker-end="url(#arrow)"/>
-
-    <!-- int_trino_query_vcpu_rate -> concurrent_vcpu_usage (self-join) -->
-    <line x1="140" y1="406" x2="150" y2="490" marker-end="url(#arrow)"/>
-
-    <!-- concurrent_vcpu_usage -> fct_trino_query_cost -->
-    <line x1="300" y1="550" x2="340" y2="640" marker-end="url(#arrow)"/>
-    <!-- int_trino_query_cpu_usage -> fct_trino_query_cost -->
-    <line x1="400" y1="406" x2="400" y2="640" marker-end="url(#arrow)"/>
-    <!-- int_cluster_vcpu_rate -> fct_trino_query_cost -->
-    <line x1="940" y1="406" x2="560" y2="640" marker-end="url(#arrow)"/>
-
-    <!-- int_trino_query_cpu_usage -> fct_trino_workload -->
-    <line x1="480" y1="406" x2="700" y2="640" marker-end="url(#arrow)"/>
-    <!-- int_trino_query_io_usage -> fct_trino_workload -->
-    <line x1="670" y1="406" x2="750" y2="640" marker-end="url(#arrow)"/>
-
-    <!-- stg_trino__queries -> fct_trino_query_cost (long route, around the right) -->
-    <polyline points="250,238 250,290 1150,290 1150,600 440,600 440,640" marker-end="url(#arrow)"/>
-    <!-- stg_trino__queries -> fct_trino_workload (long route, further right) -->
-    <polyline points="250,248 250,300 1180,300 1180,670 950,670" marker-end="url(#arrow)"/>
-
-    <!-- fct_trino_query_cost -> fct_trino_query_daily_rank -->
-    <line x1="440" y1="700" x2="440" y2="760" marker-end="url(#arrow)"/>
-
-    <!-- fct_trino_query_cost -> growth daily/monthly (route right of daily_rank) -->
-    <polyline points="590,700 650,880" marker-end="url(#arrow)"/>
-    <polyline points="590,700 980,880" marker-end="url(#arrow)"/>
-    <!-- fct_trino_workload -> growth daily/monthly -->
-    <line x1="800" y1="700" x2="800" y2="880" marker-end="url(#arrow)"/>
-    <polyline points="800,700 1130,880" marker-end="url(#arrow)"/>
-  </g>
-
-  <text x="152" y="448" font-size="9" font-style="italic" fill="#94a3b8">self-join: overlap de intervalo,</text>
-  <text x="152" y="459" font-size="9" font-style="italic" fill="#94a3b8">mesmo cluster + query_date</text>
-
-  <!-- ===== Nodes ===== -->
-
-  <!-- Sources / seed -->
+  <rect x="0" y="0" width="2325" height="476" fill="#ffffff"/>
+  <rect x="0" y="118" width="2325" height="358" fill="url(#dotgrid)"/>
+  <rect x="0" y="0" width="2325" height="118" fill="#ffffff"/>
+  <line x1="0" y1="118" x2="2325" y2="118" stroke="#e2e8f0" stroke-width="1"/>
   <g>
-    <rect x="30" y="70" width="220" height="56" rx="8" fill="#eef2f7" stroke="#94a3b8" stroke-width="1.4"/>
-    <text x="140" y="94" text-anchor="middle" font-size="13" font-weight="700" fill="#1e293b">system.runtime.queries</text>
-    <text x="140" y="110" text-anchor="middle" font-size="10" font-style="italic" fill="#64748b">source</text>
-
-    <rect x="290" y="70" width="220" height="56" rx="8" fill="#eef2f7" stroke="#94a3b8" stroke-width="1.4"/>
-    <text x="400" y="94" text-anchor="middle" font-size="13" font-weight="700" fill="#1e293b">system.runtime.tasks</text>
-    <text x="400" y="110" text-anchor="middle" font-size="10" font-style="italic" fill="#64748b">source</text>
-
-    <rect x="830" y="70" width="220" height="56" rx="8" fill="#eef2f7" stroke="#94a3b8" stroke-width="1.4"/>
-    <text x="940" y="94" text-anchor="middle" font-size="13" font-weight="700" fill="#1e293b">cluster_shape.csv</text>
-    <text x="940" y="110" text-anchor="middle" font-size="10" font-style="italic" fill="#64748b">seed</text>
+    <rect x="30" y="20" width="30" height="30" rx="7" fill="#0f172a"/>
+    <path d="M40 35 h5 M45 30 v10 M50 33 v7 M55 27 v13" stroke="#5eead4" stroke-width="2.4" stroke-linecap="round" fill="none"/>
   </g>
-
-  <!-- Staging -->
-  <g>
-    <rect x="30" y="210" width="220" height="56" rx="8" fill="#dbeafe" stroke="#3b82f6" stroke-width="1.4"/>
-    <text x="140" y="234" text-anchor="middle" font-size="13" font-weight="700" fill="#1e3a8a">stg_trino__queries</text>
-    <text x="140" y="250" text-anchor="middle" font-size="10" font-style="italic" fill="#1d4ed8">incremental &#183; append</text>
-
-    <rect x="290" y="210" width="220" height="56" rx="8" fill="#dbeafe" stroke="#3b82f6" stroke-width="1.4"/>
-    <text x="400" y="234" text-anchor="middle" font-size="13" font-weight="700" fill="#1e3a8a">stg_trino__tasks</text>
-    <text x="400" y="250" text-anchor="middle" font-size="10" font-style="italic" fill="#1d4ed8">incremental &#183; append</text>
+  <text x="72" y="35" font-size="16" font-weight="700" fill="#0f172a">trino_cost_pipeline</text>
+  <text x="72" y="52" font-size="11.5" fill="#64748b">DAG · dbt-trino · system.runtime.queries/tasks &#8594; staging &#8594; intermediate &#8594; marts</text>
+  <rect x="30" y="70" width="62" height="26" rx="13" fill="#f1f5f9"/>
+  <text x="61" y="87" text-anchor="middle" font-size="11" fill="#94a3b8" font-weight="600">Grid</text>
+  <rect x="98" y="70" width="66" height="26" rx="13" fill="#0f172a"/>
+  <text x="131" y="87" text-anchor="middle" font-size="11" fill="#ffffff" font-weight="700">Graph</text>
+  <g font-size="11" fill="#475569">
+    <circle cx="1930.2" cy="83" r="5" fill="#f0fdfa" stroke="#0d9488" stroke-width="2"/>
+    <text x="1942.2" y="87" font-size="11">Mart</text>
+    <circle cx="1989.8" cy="83" r="5" fill="#f5f3ff" stroke="#7c3aed" stroke-width="2"/>
+    <text x="2001.8" y="87" font-size="11">Intermediate</text>
+    <circle cx="2100.6" cy="83" r="5" fill="#eff6ff" stroke="#2563eb" stroke-width="2"/>
+    <text x="2112.6" y="87" font-size="11">Staging</text>
+    <circle cx="2179.4" cy="83" r="5" fill="#fef3c7" stroke="#b45309" stroke-width="2"/>
+    <text x="2191.4" y="87" font-size="11">Seed</text>
+    <circle cx="2239.0" cy="83" r="5" fill="#f1f5f9" stroke="#64748b" stroke-width="2"/>
+    <text x="2251.0" y="87" font-size="11">Source</text>
   </g>
-
-  <!-- Intermediate -->
-  <g>
-    <rect x="30" y="350" width="220" height="56" rx="8" fill="#ede9fe" stroke="#8b5cf6" stroke-width="1.4"/>
-    <text x="140" y="374" text-anchor="middle" font-size="12.5" font-weight="700" fill="#4c1d95">int_trino_query_vcpu_rate</text>
-    <text x="140" y="390" text-anchor="middle" font-size="10" font-style="italic" fill="#6d28d9">incremental &#183; merge</text>
-
-    <rect x="290" y="350" width="220" height="56" rx="8" fill="#ede9fe" stroke="#8b5cf6" stroke-width="1.4"/>
-    <text x="400" y="374" text-anchor="middle" font-size="12.5" font-weight="700" fill="#4c1d95">int_trino_query_cpu_usage</text>
-    <text x="400" y="390" text-anchor="middle" font-size="10" font-style="italic" fill="#6d28d9">view</text>
-
-    <rect x="560" y="350" width="220" height="56" rx="8" fill="#ede9fe" stroke="#8b5cf6" stroke-width="1.4"/>
-    <text x="670" y="374" text-anchor="middle" font-size="12.5" font-weight="700" fill="#4c1d95">int_trino_query_io_usage</text>
-    <text x="670" y="390" text-anchor="middle" font-size="10" font-style="italic" fill="#6d28d9">view</text>
-
-    <rect x="830" y="350" width="220" height="56" rx="8" fill="#ede9fe" stroke="#8b5cf6" stroke-width="1.4"/>
-    <text x="940" y="374" text-anchor="middle" font-size="12.5" font-weight="700" fill="#4c1d95">int_cluster_vcpu_rate</text>
-    <text x="940" y="390" text-anchor="middle" font-size="10" font-style="italic" fill="#6d28d9">view</text>
-
-    <rect x="20" y="490" width="300" height="60" rx="8" fill="#ede9fe" stroke="#8b5cf6" stroke-width="1.4"/>
-    <text x="170" y="516" text-anchor="middle" font-size="11" font-weight="700" fill="#4c1d95">int_trino_query_concurrent_vcpu_usage</text>
-    <text x="170" y="534" text-anchor="middle" font-size="10" font-style="italic" fill="#6d28d9">incremental &#183; merge &#183; partitioned</text>
+  <g fill="none">
+    <path d="M265.4,176.0 C316.0,176.0 306.8,176.0 357.4,176.0" stroke="#64748b" stroke-width="1.6" stroke-opacity="0.55" marker-end="url(#arrow)"/>
+    <path d="M250.0,276.0 C309.1,276.0 298.3,276.0 357.4,276.0" stroke="#64748b" stroke-width="1.6" stroke-opacity="0.55" marker-end="url(#arrow)"/>
+    <path d="M232.0,376.0 C301.0,376.0 288.4,376.0 357.4,376.0" stroke="#b45309" stroke-width="1.6" stroke-opacity="0.55" marker-end="url(#arrow)"/>
+    <path d="M529.4,276.0 C594.1,276.0 582.4,226.0 647.1,226.0" stroke="#2563eb" stroke-width="1.6" stroke-opacity="0.55" marker-end="url(#arrow)"/>
+    <path d="M529.4,276.0 C594.1,276.0 582.4,326.0 647.1,326.0" stroke="#2563eb" stroke-width="1.6" stroke-opacity="0.55" marker-end="url(#arrow)"/>
+    <path d="M532.0,176.0 C771.6,176.0 728.0,226.0 967.6,226.0" stroke="#2563eb" stroke-width="1.6" stroke-opacity="0.55" marker-end="url(#arrow)"/>
+    <path d="M875.6,226.0 C926.2,226.0 917.0,226.0 967.6,226.0" stroke="#7c3aed" stroke-width="1.6" stroke-opacity="0.55" marker-end="url(#arrow)"/>
+    <path d="M532.0,176.0 C771.6,176.0 728.0,326.0 967.6,326.0" stroke="#2563eb" stroke-width="1.6" stroke-opacity="0.55" marker-end="url(#arrow)"/>
+    <path d="M875.6,226.0 C926.2,226.0 917.0,326.0 967.6,326.0" stroke="#7c3aed" stroke-width="1.6" stroke-opacity="0.55" marker-end="url(#arrow)"/>
+    <path d="M867.9,326.0 C922.7,326.0 912.8,326.0 967.6,326.0" stroke="#7c3aed" stroke-width="1.6" stroke-opacity="0.55" marker-end="url(#arrow)"/>
+    <path d="M1196.1,226.0 C1246.7,226.0 1237.5,276.0 1288.1,276.0" stroke="#7c3aed" stroke-width="1.6" stroke-opacity="0.55" marker-end="url(#arrow)"/>
+    <path d="M532.0,176.0 C1175.0,176.0 1058.0,276.0 1701.0,276.0" stroke="#2563eb" stroke-width="1.6" stroke-opacity="0.55" marker-end="url(#arrow)"/>
+    <path d="M875.6,226.0 C1329.6,226.0 1247.0,276.0 1701.0,276.0" stroke="#7c3aed" stroke-width="1.6" stroke-opacity="0.55" marker-end="url(#arrow)"/>
+    <path d="M555.1,376.0 C1185.3,376.0 1070.8,276.0 1701.0,276.0" stroke="#7c3aed" stroke-width="1.6" stroke-opacity="0.55" marker-end="url(#arrow)"/>
+    <path d="M1609.0,276.0 C1659.6,276.0 1650.4,276.0 1701.0,276.0" stroke="#7c3aed" stroke-width="1.6" stroke-opacity="0.55" marker-end="url(#arrow)"/>
+    <path d="M1891.0,276.0 C1941.6,276.0 1932.4,176.0 1983.0,176.0" stroke="#0d9488" stroke-width="1.6" stroke-opacity="0.55" marker-end="url(#arrow)"/>
+    <path d="M1891.0,276.0 C1941.6,276.0 1932.4,276.0 1983.0,276.0" stroke="#0d9488" stroke-width="1.6" stroke-opacity="0.55" marker-end="url(#arrow)"/>
+    <path d="M1142.2,326.0 C1604.6,326.0 1520.6,276.0 1983.0,276.0" stroke="#0d9488" stroke-width="1.6" stroke-opacity="0.55" marker-end="url(#arrow)"/>
+    <path d="M1891.0,276.0 C1941.6,276.0 1932.4,376.0 1983.0,376.0" stroke="#0d9488" stroke-width="1.6" stroke-opacity="0.55" marker-end="url(#arrow)"/>
+    <path d="M1142.2,326.0 C1604.6,326.0 1520.6,376.0 1983.0,376.0" stroke="#0d9488" stroke-width="1.6" stroke-opacity="0.55" marker-end="url(#arrow)"/>
   </g>
-
-  <!-- Marts -->
-  <g>
-    <rect x="290" y="640" width="300" height="60" rx="8" fill="#dcfce7" stroke="#16a34a" stroke-width="1.4"/>
-    <text x="440" y="666" text-anchor="middle" font-size="13.5" font-weight="700" fill="#14532d">fct_trino_query_cost</text>
-    <text x="440" y="684" text-anchor="middle" font-size="10" font-style="italic" fill="#15803d">incremental &#183; merge</text>
-
-    <rect x="650" y="640" width="300" height="60" rx="8" fill="#dcfce7" stroke="#16a34a" stroke-width="1.4"/>
-    <text x="800" y="666" text-anchor="middle" font-size="13.5" font-weight="700" fill="#14532d">fct_trino_workload</text>
-    <text x="800" y="684" text-anchor="middle" font-size="10" font-style="italic" fill="#15803d">incremental &#183; merge</text>
-
-    <rect x="290" y="760" width="300" height="60" rx="8" fill="#dcfce7" stroke="#16a34a" stroke-width="1.4"/>
-    <text x="440" y="786" text-anchor="middle" font-size="13.5" font-weight="700" fill="#14532d">fct_trino_query_daily_rank</text>
-    <text x="440" y="804" text-anchor="middle" font-size="10" font-style="italic" fill="#15803d">view</text>
-
-    <rect x="650" y="880" width="300" height="60" rx="8" fill="#dcfce7" stroke="#16a34a" stroke-width="1.4"/>
-    <text x="800" y="906" text-anchor="middle" font-size="12.5" font-weight="700" fill="#14532d">fct_trino_cluster_growth_daily</text>
-    <text x="800" y="924" text-anchor="middle" font-size="10" font-style="italic" fill="#15803d">view</text>
-
-    <rect x="980" y="880" width="300" height="60" rx="8" fill="#dcfce7" stroke="#16a34a" stroke-width="1.4"/>
-    <text x="1130" y="906" text-anchor="middle" font-size="12" font-weight="700" fill="#14532d">fct_trino_cluster_growth_monthly</text>
-    <text x="1130" y="924" text-anchor="middle" font-size="10" font-style="italic" fill="#15803d">view</text>
+  <g filter="url(#cardshadow)">
+    <rect x="60.0" y="146.0" width="205.4" height="60" rx="9" fill="#f1f5f9" stroke="#64748b" stroke-width="1.4"/>
+    <rect x="60.0" y="146.0" width="4" height="60" rx="2" fill="#64748b"/>
   </g>
-
-  <!-- Legend -->
-  <g font-size="11" fill="#334155">
-    <rect x="1100" y="150" width="14" height="14" rx="3" fill="#eef2f7" stroke="#94a3b8"/>
-    <text x="1120" y="161">Fonte / Seed</text>
-
-    <rect x="1100" y="176" width="14" height="14" rx="3" fill="#dbeafe" stroke="#3b82f6"/>
-    <text x="1120" y="187">Staging</text>
-
-    <rect x="1100" y="202" width="14" height="14" rx="3" fill="#ede9fe" stroke="#8b5cf6"/>
-    <text x="1120" y="213">Intermediate</text>
-
-    <rect x="1100" y="228" width="14" height="14" rx="3" fill="#dcfce7" stroke="#16a34a"/>
-    <text x="1120" y="239">Mart</text>
+  <text x="78.0" y="172.0" font-size="12.5" font-weight="700" fill="#0f172a">system.runtime.queries</text>
+  <text x="78.0" y="191.0" font-size="10" fill="#64748b" font-weight="600" letter-spacing="0.02em">trino_system source</text>
+  <g filter="url(#cardshadow)">
+    <rect x="60.0" y="246.0" width="190.0" height="60" rx="9" fill="#f1f5f9" stroke="#64748b" stroke-width="1.4"/>
+    <rect x="60.0" y="246.0" width="4" height="60" rx="2" fill="#64748b"/>
   </g>
-
-  <text x="1300" y="948" text-anchor="end" font-size="9" fill="#cbd5e1">gerado a partir dos ref()/source() do projeto dbt</text>
+  <text x="78.0" y="272.0" font-size="12.5" font-weight="700" fill="#0f172a">system.runtime.tasks</text>
+  <text x="78.0" y="291.0" font-size="10" fill="#64748b" font-weight="600" letter-spacing="0.02em">trino_system source</text>
+  <g filter="url(#cardshadow)">
+    <rect x="60.0" y="346.0" width="172.0" height="60" rx="9" fill="#fef3c7" stroke="#b45309" stroke-width="1.4"/>
+    <rect x="60.0" y="346.0" width="4" height="60" rx="2" fill="#b45309"/>
+  </g>
+  <text x="78.0" y="372.0" font-size="12.5" font-weight="700" fill="#0f172a">cluster_shape.csv</text>
+  <text x="78.0" y="391.0" font-size="10" fill="#b45309" font-weight="600" letter-spacing="0.02em">seed</text>
+  <g filter="url(#cardshadow)">
+    <rect x="357.4" y="146.0" width="174.6" height="60" rx="9" fill="#eff6ff" stroke="#2563eb" stroke-width="1.4"/>
+    <rect x="357.4" y="146.0" width="4" height="60" rx="2" fill="#2563eb"/>
+  </g>
+  <text x="375.4" y="172.0" font-size="12.5" font-weight="700" fill="#0f172a">stg_trino__queries</text>
+  <text x="375.4" y="191.0" font-size="10" fill="#2563eb" font-weight="600" letter-spacing="0.02em">staging</text>
+  <g filter="url(#cardshadow)">
+    <rect x="357.4" y="246.0" width="172.0" height="60" rx="9" fill="#eff6ff" stroke="#2563eb" stroke-width="1.4"/>
+    <rect x="357.4" y="246.0" width="4" height="60" rx="2" fill="#2563eb"/>
+  </g>
+  <text x="375.4" y="272.0" font-size="12.5" font-weight="700" fill="#0f172a">stg_trino__tasks</text>
+  <text x="375.4" y="291.0" font-size="10" fill="#2563eb" font-weight="600" letter-spacing="0.02em">staging</text>
+  <g filter="url(#cardshadow)">
+    <rect x="357.4" y="346.0" width="197.7" height="60" rx="9" fill="#f5f3ff" stroke="#7c3aed" stroke-width="1.4"/>
+    <rect x="357.4" y="346.0" width="4" height="60" rx="2" fill="#7c3aed"/>
+  </g>
+  <text x="375.4" y="372.0" font-size="12.5" font-weight="700" fill="#0f172a">int_cluster_vcpu_rate</text>
+  <text x="375.4" y="391.0" font-size="10" fill="#7c3aed" font-weight="600" letter-spacing="0.02em">intermediate · view</text>
+  <g filter="url(#cardshadow)">
+    <rect x="647.1" y="196.0" width="228.5" height="60" rx="9" fill="#f5f3ff" stroke="#7c3aed" stroke-width="1.4"/>
+    <rect x="647.1" y="196.0" width="4" height="60" rx="2" fill="#7c3aed"/>
+  </g>
+  <text x="665.1" y="222.0" font-size="12.5" font-weight="700" fill="#0f172a">int_trino_query_cpu_usage</text>
+  <text x="665.1" y="241.0" font-size="10" fill="#7c3aed" font-weight="600" letter-spacing="0.02em">intermediate · view</text>
+  <g filter="url(#cardshadow)">
+    <rect x="647.1" y="296.0" width="220.8" height="60" rx="9" fill="#f5f3ff" stroke="#7c3aed" stroke-width="1.4"/>
+    <rect x="647.1" y="296.0" width="4" height="60" rx="2" fill="#7c3aed"/>
+  </g>
+  <text x="665.1" y="322.0" font-size="12.5" font-weight="700" fill="#0f172a">int_trino_query_io_usage</text>
+  <text x="665.1" y="341.0" font-size="10" fill="#7c3aed" font-weight="600" letter-spacing="0.02em">intermediate · view</text>
+  <g filter="url(#cardshadow)">
+    <rect x="967.6" y="196.0" width="228.5" height="60" rx="9" fill="#f5f3ff" stroke="#7c3aed" stroke-width="1.4"/>
+    <rect x="967.6" y="196.0" width="4" height="60" rx="2" fill="#7c3aed"/>
+  </g>
+  <text x="985.6" y="222.0" font-size="12.5" font-weight="700" fill="#0f172a">int_trino_query_vcpu_rate</text>
+  <text x="985.6" y="241.0" font-size="10" fill="#7c3aed" font-weight="600" letter-spacing="0.02em">intermediate · incremental</text>
+  <g filter="url(#cardshadow)">
+    <rect x="967.6" y="296.0" width="174.6" height="60" rx="9" fill="#f0fdfa" stroke="#0d9488" stroke-width="1.4"/>
+    <rect x="967.6" y="296.0" width="4" height="60" rx="2" fill="#0d9488"/>
+  </g>
+  <text x="985.6" y="322.0" font-size="12.5" font-weight="700" fill="#0f172a">fct_trino_workload</text>
+  <text x="985.6" y="341.0" font-size="10" fill="#0d9488" font-weight="600" letter-spacing="0.02em">mart · incremental</text>
+  <g filter="url(#cardshadow)">
+    <rect x="1288.1" y="246.0" width="320.9" height="60" rx="9" fill="#f5f3ff" stroke="#7c3aed" stroke-width="1.4"/>
+    <rect x="1288.1" y="246.0" width="4" height="60" rx="2" fill="#7c3aed"/>
+  </g>
+  <text x="1306.1" y="272.0" font-size="12.5" font-weight="700" fill="#0f172a">int_trino_query_concurrent_vcpu_usage</text>
+  <text x="1306.1" y="291.0" font-size="10" fill="#7c3aed" font-weight="600" letter-spacing="0.02em">intermediate · incremental</text>
+  <g filter="url(#cardshadow)">
+    <rect x="1701.0" y="246.0" width="190.0" height="60" rx="9" fill="#f0fdfa" stroke="#0d9488" stroke-width="1.4"/>
+    <rect x="1701.0" y="246.0" width="4" height="60" rx="2" fill="#0d9488"/>
+  </g>
+  <text x="1719.0" y="272.0" font-size="12.5" font-weight="700" fill="#0f172a">fct_trino_query_cost</text>
+  <text x="1719.0" y="291.0" font-size="10" fill="#0d9488" font-weight="600" letter-spacing="0.02em">mart · incremental</text>
+  <g filter="url(#cardshadow)">
+    <rect x="1983.0" y="146.0" width="236.2" height="60" rx="9" fill="#f0fdfa" stroke="#0d9488" stroke-width="1.4"/>
+    <rect x="1983.0" y="146.0" width="4" height="60" rx="2" fill="#0d9488"/>
+  </g>
+  <text x="2001.0" y="172.0" font-size="12.5" font-weight="700" fill="#0f172a">fct_trino_query_daily_rank</text>
+  <text x="2001.0" y="191.0" font-size="10" fill="#0d9488" font-weight="600" letter-spacing="0.02em">mart · view</text>
+  <g filter="url(#cardshadow)">
+    <rect x="1983.0" y="246.0" width="267.0" height="60" rx="9" fill="#f0fdfa" stroke="#0d9488" stroke-width="1.4"/>
+    <rect x="1983.0" y="246.0" width="4" height="60" rx="2" fill="#0d9488"/>
+  </g>
+  <text x="2001.0" y="272.0" font-size="12.5" font-weight="700" fill="#0f172a">fct_trino_cluster_growth_daily</text>
+  <text x="2001.0" y="291.0" font-size="10" fill="#0d9488" font-weight="600" letter-spacing="0.02em">mart · view</text>
+  <g filter="url(#cardshadow)">
+    <rect x="1983.0" y="346.0" width="282.4" height="60" rx="9" fill="#f0fdfa" stroke="#0d9488" stroke-width="1.4"/>
+    <rect x="1983.0" y="346.0" width="4" height="60" rx="2" fill="#0d9488"/>
+  </g>
+  <text x="2001.0" y="372.0" font-size="12.5" font-weight="700" fill="#0f172a">fct_trino_cluster_growth_monthly</text>
+  <text x="2001.0" y="391.0" font-size="10" fill="#0d9488" font-weight="600" letter-spacing="0.02em">mart · view</text>
+  <text x="2295" y="460" text-anchor="end" font-size="9" fill="#cbd5e1">gerado a partir de target/manifest.json (dbt) -- profundidade real de depend&#234;ncia</text>
 </svg>
