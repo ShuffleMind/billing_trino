@@ -25,8 +25,6 @@ select
     cast('{{ var("cluster_id") }}' as varchar) as cluster_id,
     query_id,
     task_id,
-    stage_id,
-    state,
     split_cpu_time_ms,
     split_scheduled_time_ms,
     raw_input_bytes,

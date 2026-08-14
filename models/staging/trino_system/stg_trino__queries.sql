@@ -13,8 +13,8 @@
 -- antigas ou nunca existiram) -- por isso não são selecionadas aqui.
 -- Reconfirme ao trocar de versão do Trino antes de rodar em produção.
 --
--- created/started/last_heartbeat/end vêm como timestamp(3) with time
--- zone em system.runtime.queries, mas Iceberg só aceita timestamp(6).
+-- created/started/end vêm como timestamp(3) with time zone em
+-- system.runtime.queries, mas Iceberg só aceita timestamp(6).
 -- Rodando via `trino` CLI o Trino faz esse widening implicitamente no
 -- CREATE TABLE AS SELECT, mas o dbt-trino (via cliente Python) envolve a
 -- query numa camada extra que quebra esse comportamento implícito e
@@ -32,11 +32,8 @@ select
     query,
     cast(created as timestamp(6) with time zone)        as created,
     cast(started as timestamp(6) with time zone)        as started,
-    cast(last_heartbeat as timestamp(6) with time zone) as last_heartbeat,
     cast("end" as timestamp(6) with time zone)          as ended_at,
     queued_time_ms,
-    analysis_time_ms,
-    planning_time_ms,
     error_type,
     error_code
 from {{ source('trino_system', 'queries') }}
