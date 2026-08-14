@@ -1,3 +1,5 @@
+*[Read in English](README.en.md)*
+
 # trino_cost_pipeline
 
 Pipeline dbt (dbt-trino) que estima o **custo em USD e vCPU-horas de cada query executada em um cluster Trino**, a partir das tabelas de sistema do coordinator (`system.runtime.queries` / `system.runtime.tasks`) e de um seed com o shape/preço das máquinas do cluster.
