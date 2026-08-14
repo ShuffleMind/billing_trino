@@ -1,4 +1,4 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 2325 476" font-family="-apple-system, Segoe UI, Helvetica, Arial, sans-serif">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1260 810" width="1260" height="810" font-family="-apple-system, Segoe UI, Helvetica, Arial, sans-serif">
   <defs>
     <marker id="arrow" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
       <path d="M0,0 L10,5 L0,10 z" fill="#94a3b8"/>
@@ -10,10 +10,10 @@
       <feDropShadow dx="0" dy="1.5" stdDeviation="2" flood-color="#0f172a" flood-opacity="0.10"/>
     </filter>
   </defs>
-  <rect x="0" y="0" width="2325" height="476" fill="#ffffff"/>
-  <rect x="0" y="118" width="2325" height="358" fill="url(#dotgrid)"/>
-  <rect x="0" y="0" width="2325" height="118" fill="#ffffff"/>
-  <line x1="0" y1="118" x2="2325" y2="118" stroke="#e2e8f0" stroke-width="1"/>
+  <rect x="0" y="0" width="1260" height="810" fill="#ffffff"/>
+  <rect x="0" y="118" width="1260" height="692" fill="url(#dotgrid)"/>
+  <rect x="0" y="0" width="1260" height="118" fill="#ffffff"/>
+  <line x1="0" y1="118" x2="1260" y2="118" stroke="#e2e8f0" stroke-width="1"/>
   <g>
     <rect x="30" y="20" width="30" height="30" rx="7" fill="#0f172a"/>
     <path d="M40 35 h5 M45 30 v10 M50 33 v7 M55 27 v13" stroke="#5eead4" stroke-width="2.4" stroke-linecap="round" fill="none"/>
@@ -25,16 +25,16 @@
   <rect x="98" y="70" width="66" height="26" rx="13" fill="#0f172a"/>
   <text x="131" y="87" text-anchor="middle" font-size="11" fill="#ffffff" font-weight="700">Graph</text>
   <g font-size="11" fill="#475569">
-    <circle cx="1930.2" cy="83" r="5" fill="#f0fdfa" stroke="#0d9488" stroke-width="2"/>
-    <text x="1942.2" y="87" font-size="11">Mart</text>
-    <circle cx="1989.8" cy="83" r="5" fill="#f5f3ff" stroke="#7c3aed" stroke-width="2"/>
-    <text x="2001.8" y="87" font-size="11">Intermediate</text>
-    <circle cx="2100.6" cy="83" r="5" fill="#eff6ff" stroke="#2563eb" stroke-width="2"/>
-    <text x="2112.6" y="87" font-size="11">Staging</text>
-    <circle cx="2179.4" cy="83" r="5" fill="#fef3c7" stroke="#b45309" stroke-width="2"/>
-    <text x="2191.4" y="87" font-size="11">Seed</text>
-    <circle cx="2239.0" cy="83" r="5" fill="#f1f5f9" stroke="#64748b" stroke-width="2"/>
-    <text x="2251.0" y="87" font-size="11">Source</text>
+    <circle cx="865.2" cy="83" r="5" fill="#f0fdfa" stroke="#0d9488" stroke-width="2"/>
+    <text x="877.2" y="87" font-size="11">Mart</text>
+    <circle cx="924.8" cy="83" r="5" fill="#f5f3ff" stroke="#7c3aed" stroke-width="2"/>
+    <text x="936.8" y="87" font-size="11">Intermediate</text>
+    <circle cx="1035.6" cy="83" r="5" fill="#eff6ff" stroke="#2563eb" stroke-width="2"/>
+    <text x="1047.6" y="87" font-size="11">Staging</text>
+    <circle cx="1114.4" cy="83" r="5" fill="#fef3c7" stroke="#b45309" stroke-width="2"/>
+    <text x="1126.4" y="87" font-size="11">Seed</text>
+    <circle cx="1174.0" cy="83" r="5" fill="#f1f5f9" stroke="#64748b" stroke-width="2"/>
+    <text x="1186.0" y="87" font-size="11">Source</text>
   </g>
   <g fill="none">
     <path d="M265.4,176.0 C316.0,176.0 306.8,176.0 357.4,176.0" stroke="#64748b" stroke-width="1.6" stroke-opacity="0.55" marker-end="url(#arrow)"/>
@@ -47,16 +47,16 @@
     <path d="M532.0,176.0 C771.6,176.0 728.0,326.0 967.6,326.0" stroke="#2563eb" stroke-width="1.6" stroke-opacity="0.55" marker-end="url(#arrow)"/>
     <path d="M875.6,226.0 C926.2,226.0 917.0,326.0 967.6,326.0" stroke="#7c3aed" stroke-width="1.6" stroke-opacity="0.55" marker-end="url(#arrow)"/>
     <path d="M867.9,326.0 C922.7,326.0 912.8,326.0 967.6,326.0" stroke="#7c3aed" stroke-width="1.6" stroke-opacity="0.55" marker-end="url(#arrow)"/>
-    <path d="M1196.1,226.0 C1246.7,226.0 1237.5,276.0 1288.1,276.0" stroke="#7c3aed" stroke-width="1.6" stroke-opacity="0.55" marker-end="url(#arrow)"/>
-    <path d="M532.0,176.0 C1175.0,176.0 1058.0,276.0 1701.0,276.0" stroke="#2563eb" stroke-width="1.6" stroke-opacity="0.55" marker-end="url(#arrow)"/>
-    <path d="M875.6,226.0 C1329.6,226.0 1247.0,276.0 1701.0,276.0" stroke="#7c3aed" stroke-width="1.6" stroke-opacity="0.55" marker-end="url(#arrow)"/>
-    <path d="M555.1,376.0 C1185.3,376.0 1070.8,276.0 1701.0,276.0" stroke="#7c3aed" stroke-width="1.6" stroke-opacity="0.55" marker-end="url(#arrow)"/>
-    <path d="M1609.0,276.0 C1659.6,276.0 1650.4,276.0 1701.0,276.0" stroke="#7c3aed" stroke-width="1.6" stroke-opacity="0.55" marker-end="url(#arrow)"/>
-    <path d="M1891.0,276.0 C1941.6,276.0 1932.4,176.0 1983.0,176.0" stroke="#0d9488" stroke-width="1.6" stroke-opacity="0.55" marker-end="url(#arrow)"/>
-    <path d="M1891.0,276.0 C1941.6,276.0 1932.4,276.0 1983.0,276.0" stroke="#0d9488" stroke-width="1.6" stroke-opacity="0.55" marker-end="url(#arrow)"/>
-    <path d="M1142.2,326.0 C1604.6,326.0 1520.6,276.0 1983.0,276.0" stroke="#0d9488" stroke-width="1.6" stroke-opacity="0.55" marker-end="url(#arrow)"/>
-    <path d="M1891.0,276.0 C1941.6,276.0 1932.4,376.0 1983.0,376.0" stroke="#0d9488" stroke-width="1.6" stroke-opacity="0.55" marker-end="url(#arrow)"/>
-    <path d="M1142.2,326.0 C1604.6,326.0 1520.6,376.0 1983.0,376.0" stroke="#0d9488" stroke-width="1.6" stroke-opacity="0.55" marker-end="url(#arrow)"/>
+    <path d="M1081.85,256.0 C1081.85,433.0 220.45,433.0 220.45,610.0" stroke="#7c3aed" stroke-width="1.6" stroke-opacity="0.55" marker-end="url(#arrow)"/>
+    <path d="M444.7,206.0 C444.7,408.0 567.9,408.0 567.9,610.0" stroke="#2563eb" stroke-width="1.6" stroke-opacity="0.55" marker-end="url(#arrow)"/>
+    <path d="M761.35,256.0 C761.35,433.0 567.9,433.0 567.9,610.0" stroke="#7c3aed" stroke-width="1.6" stroke-opacity="0.55" marker-end="url(#arrow)"/>
+    <path d="M456.25,406.0 C456.25,508.0 567.9,508.0 567.9,610.0" stroke="#7c3aed" stroke-width="1.6" stroke-opacity="0.55" marker-end="url(#arrow)"/>
+    <path d="M380.9,640.0 C420.9,640.0 432.9,640.0 472.9,640.0" stroke="#0d9488" stroke-width="1.6" stroke-opacity="0.55" marker-end="url(#arrow)"/>
+    <path d="M662.9,640.0 C708.9,640.0 708.9,540.0 754.9,540.0" stroke="#0d9488" stroke-width="1.6" stroke-opacity="0.55" marker-end="url(#arrow)"/>
+    <path d="M662.9,640.0 C708.9,640.0 708.9,640.0 754.9,640.0" stroke="#0d9488" stroke-width="1.6" stroke-opacity="0.55" marker-end="url(#arrow)"/>
+    <path d="M1054.9,356.0 C1054.9,483.0 888.4,483.0 888.4,610.0" stroke="#0d9488" stroke-width="1.6" stroke-opacity="0.55" marker-end="url(#arrow)"/>
+    <path d="M662.9,640.0 C708.9,640.0 708.9,740.0 754.9,740.0" stroke="#0d9488" stroke-width="1.6" stroke-opacity="0.55" marker-end="url(#arrow)"/>
+    <path d="M1054.9,356.0 C1054.9,533.0 896.1,533.0 896.1,710.0" stroke="#0d9488" stroke-width="1.6" stroke-opacity="0.55" marker-end="url(#arrow)"/>
   </g>
   <g filter="url(#cardshadow)">
     <rect x="60.0" y="146.0" width="205.4" height="60" rx="9" fill="#f1f5f9" stroke="#64748b" stroke-width="1.4"/>
@@ -119,34 +119,34 @@
   <text x="985.6" y="322.0" font-size="12.5" font-weight="700" fill="#0f172a">fct_trino_workload</text>
   <text x="985.6" y="341.0" font-size="10" fill="#0d9488" font-weight="600" letter-spacing="0.02em">mart · incremental</text>
   <g filter="url(#cardshadow)">
-    <rect x="1288.1" y="246.0" width="320.9" height="60" rx="9" fill="#f5f3ff" stroke="#7c3aed" stroke-width="1.4"/>
-    <rect x="1288.1" y="246.0" width="4" height="60" rx="2" fill="#7c3aed"/>
+    <rect x="60.0" y="610.0" width="320.9" height="60" rx="9" fill="#f5f3ff" stroke="#7c3aed" stroke-width="1.4"/>
+    <rect x="60.0" y="610.0" width="4" height="60" rx="2" fill="#7c3aed"/>
   </g>
-  <text x="1306.1" y="272.0" font-size="12.5" font-weight="700" fill="#0f172a">int_trino_query_concurrent_vcpu_usage</text>
-  <text x="1306.1" y="291.0" font-size="10" fill="#7c3aed" font-weight="600" letter-spacing="0.02em">intermediate · incremental</text>
+  <text x="78.0" y="636.0" font-size="12.5" font-weight="700" fill="#0f172a">int_trino_query_concurrent_vcpu_usage</text>
+  <text x="78.0" y="655.0" font-size="10" fill="#7c3aed" font-weight="600" letter-spacing="0.02em">intermediate · incremental</text>
   <g filter="url(#cardshadow)">
-    <rect x="1701.0" y="246.0" width="190.0" height="60" rx="9" fill="#f0fdfa" stroke="#0d9488" stroke-width="1.4"/>
-    <rect x="1701.0" y="246.0" width="4" height="60" rx="2" fill="#0d9488"/>
+    <rect x="472.9" y="610.0" width="190.0" height="60" rx="9" fill="#f0fdfa" stroke="#0d9488" stroke-width="1.4"/>
+    <rect x="472.9" y="610.0" width="4" height="60" rx="2" fill="#0d9488"/>
   </g>
-  <text x="1719.0" y="272.0" font-size="12.5" font-weight="700" fill="#0f172a">fct_trino_query_cost</text>
-  <text x="1719.0" y="291.0" font-size="10" fill="#0d9488" font-weight="600" letter-spacing="0.02em">mart · incremental</text>
+  <text x="490.9" y="636.0" font-size="12.5" font-weight="700" fill="#0f172a">fct_trino_query_cost</text>
+  <text x="490.9" y="655.0" font-size="10" fill="#0d9488" font-weight="600" letter-spacing="0.02em">mart · incremental</text>
   <g filter="url(#cardshadow)">
-    <rect x="1983.0" y="146.0" width="236.2" height="60" rx="9" fill="#f0fdfa" stroke="#0d9488" stroke-width="1.4"/>
-    <rect x="1983.0" y="146.0" width="4" height="60" rx="2" fill="#0d9488"/>
+    <rect x="754.9" y="510.0" width="236.2" height="60" rx="9" fill="#f0fdfa" stroke="#0d9488" stroke-width="1.4"/>
+    <rect x="754.9" y="510.0" width="4" height="60" rx="2" fill="#0d9488"/>
   </g>
-  <text x="2001.0" y="172.0" font-size="12.5" font-weight="700" fill="#0f172a">fct_trino_query_daily_rank</text>
-  <text x="2001.0" y="191.0" font-size="10" fill="#0d9488" font-weight="600" letter-spacing="0.02em">mart · view</text>
+  <text x="772.9" y="536.0" font-size="12.5" font-weight="700" fill="#0f172a">fct_trino_query_daily_rank</text>
+  <text x="772.9" y="555.0" font-size="10" fill="#0d9488" font-weight="600" letter-spacing="0.02em">mart · view</text>
   <g filter="url(#cardshadow)">
-    <rect x="1983.0" y="246.0" width="267.0" height="60" rx="9" fill="#f0fdfa" stroke="#0d9488" stroke-width="1.4"/>
-    <rect x="1983.0" y="246.0" width="4" height="60" rx="2" fill="#0d9488"/>
+    <rect x="754.9" y="610.0" width="267.0" height="60" rx="9" fill="#f0fdfa" stroke="#0d9488" stroke-width="1.4"/>
+    <rect x="754.9" y="610.0" width="4" height="60" rx="2" fill="#0d9488"/>
   </g>
-  <text x="2001.0" y="272.0" font-size="12.5" font-weight="700" fill="#0f172a">fct_trino_cluster_growth_daily</text>
-  <text x="2001.0" y="291.0" font-size="10" fill="#0d9488" font-weight="600" letter-spacing="0.02em">mart · view</text>
+  <text x="772.9" y="636.0" font-size="12.5" font-weight="700" fill="#0f172a">fct_trino_cluster_growth_daily</text>
+  <text x="772.9" y="655.0" font-size="10" fill="#0d9488" font-weight="600" letter-spacing="0.02em">mart · view</text>
   <g filter="url(#cardshadow)">
-    <rect x="1983.0" y="346.0" width="282.4" height="60" rx="9" fill="#f0fdfa" stroke="#0d9488" stroke-width="1.4"/>
-    <rect x="1983.0" y="346.0" width="4" height="60" rx="2" fill="#0d9488"/>
+    <rect x="754.9" y="710.0" width="282.4" height="60" rx="9" fill="#f0fdfa" stroke="#0d9488" stroke-width="1.4"/>
+    <rect x="754.9" y="710.0" width="4" height="60" rx="2" fill="#0d9488"/>
   </g>
-  <text x="2001.0" y="372.0" font-size="12.5" font-weight="700" fill="#0f172a">fct_trino_cluster_growth_monthly</text>
-  <text x="2001.0" y="391.0" font-size="10" fill="#0d9488" font-weight="600" letter-spacing="0.02em">mart · view</text>
-  <text x="2295" y="460" text-anchor="end" font-size="9" fill="#cbd5e1">gerado a partir de target/manifest.json (dbt) -- profundidade real de depend&#234;ncia</text>
+  <text x="772.9" y="736.0" font-size="12.5" font-weight="700" fill="#0f172a">fct_trino_cluster_growth_monthly</text>
+  <text x="772.9" y="755.0" font-size="10" fill="#0d9488" font-weight="600" letter-spacing="0.02em">mart · view</text>
+  <text x="1230" y="794" text-anchor="end" font-size="9" fill="#cbd5e1">gerado a partir de target/manifest.json (dbt) -- profundidade real de depend&#234;ncia</text>
 </svg>

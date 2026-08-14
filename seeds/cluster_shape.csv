@@ -1,3 +1,5 @@
 cluster_id,node_role,instance_type,vcpus,hourly_price_usd,node_count,valid_from
-trino1,coordinator,r6i.2xlarge,8,0.504,1,2026-01-01
-trino2,coordinator,r6i.2xlarge,8,0.504,1,2026-01-01
+trino1,coordinator,r6g.16xlarge,64,3.2256,1,2026-01-01
+trino1,worker,r6g.16xlarge,64,3.2256,4,2026-01-01
+trino2,coordinator,r6g.16xlarge,64,3.2256,1,2026-01-01
+trino2,worker,r6g.16xlarge,64,3.2256,4,2026-01-01
