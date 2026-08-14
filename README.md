@@ -52,6 +52,21 @@ default,worker,r6i.4xlarge,16,1.008,10,2026-01-01
 
 > **Limitação conhecida:** `int_cluster_vcpu_rate` assume um shape homogêneo e estático por `node_role`. Se o cluster faz autoscaling ou troca de `instance_type` ao longo do tempo, o seed precisa ser versionado com faixas `valid_from`/`valid_to` e o modelo passar a filtrar pelo período vigente em vez de agregar a linha atual — isso ainda não está implementado.
 
+## Dashboard FinOps
+
+[scripts/finops_server.py](scripts/finops_server.py) serve um dashboard estático ([scripts/finops_dashboard.html](scripts/finops_dashboard.html), HTML/JS puro) e expõe `/api/finops`, que consulta o Trino ao vivo (`iceberg.billing.*`) a cada request — sem cache, sempre refletindo o estado atual dos marts. Multi-cluster: agrega `fct_trino_query_cost`/`fct_trino_workload` por `cluster_id` e `user_name`, com uma página dedicada de ranking de usuários.
+
+![Dashboard Trino FinOps](docs/finops_dashboard.png)
+
+```bash
+docker build -t trino-finops-dashboard scripts/
+docker run --rm -p 5050:5050 \
+    -e TRINO_HOST=host.docker.internal \
+    -e TRINO_PORT=8080 \
+    trino-finops-dashboard
+# abre em http://localhost:5050
+```
+
 ## Configuração
 
 ```yaml
